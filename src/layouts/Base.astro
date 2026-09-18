@@ -17,7 +17,12 @@ const path = Astro.url.pathname;
   <body>
     <header class="site-header">
       <a class="brand" href={sitePath()}>
-        <span class="brand-mark">百</span>
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 32 32" role="img">
+            <path d="M7 7h18M10 11h12v14H10zM10 16h12" />
+            <path class="brand-mark-accent" d="M22 11v14" />
+          </svg>
+        </span>
         <span><strong>百法难治</strong><small>AI FIELD NOTES</small></span>
       </a>
       <nav>

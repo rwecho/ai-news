@@ -44,3 +44,5 @@
   .post-row.no-cover .arrow{grid-column:3;grid-row:1}
   .hero-slide-media .cover-embed iframe{min-height:0;aspect-ratio:16/9}
 }
+
+.post-row.is-featured-current{display:none!important}

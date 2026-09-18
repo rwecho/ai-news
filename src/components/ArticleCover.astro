@@ -3,9 +3,9 @@ const { post, compact = false } = Astro.props;
 const data = post.data;
 const body = (post.body ?? '') as string;
 const driveId = data.coverDriveId
-  ?? body.match(/<DriveVideo[\\s\\S]*?fileId=["']([^"']+)["']/)?.[1];
+  ?? body.match(/<DriveVideo[\s\S]*?fileId=["']([^"']+)["']/)?.[1];
 const imageUrl = data.cover
-  ?? body.match(/!\\[[^\\]]*\\]\\(([^)\\s]+)/)?.[1];
+  ?? body.match(/!\[[^\]]*\]\(([^)\s]+)/)?.[1];
 const alt = data.coverAlt ?? data.title;
 ---
 <div class:list={['article-cover', compact && 'article-cover-compact']}>

@@ -1,0 +1,19 @@
+---
+interface Props {
+  fileId: string;
+  title?: string;
+}
+const { fileId, title = '视频' } = Astro.props;
+const src = `https://drive.google.com/file/d/${fileId}/preview`;
+---
+
+<figure class="media-frame">
+  <iframe
+    src={src}
+    title={title}
+    loading="lazy"
+    allow="autoplay; fullscreen"
+    allowfullscreen
+  ></iframe>
+  <figcaption>{title} · Google Drive 归档素材</figcaption>
+</figure>

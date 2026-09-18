@@ -1,0 +1,33 @@
+---
+import '../styles/global.css';
+const { title = '百法难治 AI', description = '把 AI 新闻讲成人话。' } = Astro.props;
+const path = Astro.url.pathname;
+---
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href={import.meta.env.BASE_URL}>
+        <span class="brand-mark">百</span>
+        <span><strong>百法难治</strong><small>AI FIELD NOTES</small></span>
+      </a>
+      <nav>
+        <a class:list-active={path === import.meta.env.BASE_URL} href={import.meta.env.BASE_URL}>首页</a>
+        <a href={`${import.meta.env.BASE_URL}tags/`}>主题</a>
+        <a href="https://github.com/rwecho/ai-news">GitHub ↗</a>
+      </nav>
+    </header>
+    <main><slot /></main>
+    <footer class="site-footer">
+      <span>不追热点的热闹，只追消息背后的东西。</span>
+      <span>© 2026 百法难治</span>
+    </footer>
+  </body>
+</html>

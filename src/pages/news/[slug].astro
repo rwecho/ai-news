@@ -1,0 +1,27 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('news');
+  return posts.map((post) => ({ params: { slug: post.data.slug }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Base title={`${post.data.title} · 百法难治 AI`} description={post.data.summary}>
+  <article class="article-shell">
+    <header class="article-header">
+      <div class="eyebrow">{post.data.tags.join(' / ')}</div>
+      <h1>{post.data.title}</h1>
+      <p class="article-summary">{post.data.summary}</p>
+      <div class="article-meta"><span>{post.data.author}</span><time>{post.data.date.toLocaleDateString('zh-CN')}</time></div>
+    </header>
+    <div class="article-layout">
+      <aside class="article-aside"><span>本文记录</span><strong>事实 · 推测 · 判断</strong><small>来源链接均保留在正文附近</small></aside>
+      <div class="prose"><Content /></div>
+    </div>
+  </article>
+</Base>

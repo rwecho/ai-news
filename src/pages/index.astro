@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const posts = (await getCollection('news')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const featured = posts[0];
+const rest = posts.slice(1);
+---
+
+<Base>
+  <section class="hero-shell">
+    <div class="eyebrow"><span class="pulse"></span> 百法难治 · AI FIELD NOTES</div>
+    <h1>把 AI 新闻讲成人话，<br /><em>也把不确定性留下来。</em></h1>
+    <p class="hero-copy">这里不追着官方新闻稿跑。我们从创作者、测试、评论和真实使用场景里，把一件事拆开看。</p>
+  </section>
+
+  {featured && (
+    <a class="featured-card" href={`${import.meta.env.BASE_URL}news/${featured.data.slug}/`}>
+      <div class="featured-meta"><span>最新文章</span><time>{featured.data.date.toLocaleDateString('zh-CN')}</time></div>
+      <h2>{featured.data.title}</h2>
+      <p>{featured.data.summary}</p>
+      <span class="read-link">读下去 <span>↗</span></span>
+    </a>
+  )}
+
+  <section class="section-block">
+    <div class="section-head"><h2>最近写的</h2><span>{posts.length} 篇记录</span></div>
+    <div class="post-list">
+      {rest.map((post) => (
+        <a class="post-row" href={`${import.meta.env.BASE_URL}news/${post.data.slug}/`}>
+          <time>{post.data.date.toLocaleDateString('zh-CN')}</time>
+          <div><h3>{post.data.title}</h3><p>{post.data.summary}</p></div>
+          <span class="arrow">↗</span>
+        </a>
+      ))}
+      {rest.length === 0 && <p class="empty">下一篇正在路上。</p>}
+    </div>
+  </section>
+
+  <section class="principles">
+    <span class="eyebrow">EDITORIAL RULES</span>
+    <p>先看证据，再下判断。能说清楚的地方说清楚，不能确认的地方就直接承认。</p>
+  </section>
+</Base>

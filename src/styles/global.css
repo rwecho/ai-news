@@ -22,3 +22,25 @@
 .article-figure figcaption{display:flex;justify-content:space-between;gap:18px;color:#8a8e96;font-size:12px;line-height:1.6;margin-top:11px}
 .article-figure figcaption a{white-space:nowrap}
 @media(max-width:720px){.home-intro{padding:68px 0 48px}.home-intro h1{font-size:43px}.post-row{grid-template-columns:28px minmax(0,1fr) 22px!important;gap:12px!important;padding:23px 0!important}.post-row:hover{padding-left:6px!important;padding-right:6px!important}.post-copy h3{font-size:20px}.post-copy p{font-size:14px}.article-figure{margin:38px 0 44px}.article-figure figcaption{display:block}.article-figure figcaption a{display:block;margin-top:5px}}
+
+/* Conditional media: list thumbnails appear only when an article has media. */
+.post-row.has-cover{grid-template-columns:54px minmax(0,1fr) 190px 34px!important}
+.post-row.no-cover{grid-template-columns:54px minmax(0,1fr) 34px!important}
+.post-row.has-cover .article-cover{display:block!important;grid-column:3;grid-row:1;width:190px;height:112px;align-self:center}
+.post-row.has-cover .arrow{grid-column:4}
+.post-row.no-cover .arrow{grid-column:3}
+.post-row .article-cover-compact .cover-fallback{min-height:100%;padding:12px}
+.post-row .cover-embed iframe{display:block;width:100%;height:100%;min-height:112px;border:0}
+.hero-slide-media .cover-embed iframe{display:block;width:100%;height:100%;min-height:360px;border:0}
+@media(max-width:720px){
+  .post-row.has-cover{grid-template-columns:minmax(0,1fr) 92px 22px!important}
+  .post-row.no-cover{grid-template-columns:minmax(0,1fr) 22px!important}
+  .post-row.has-cover .post-index,.post-row.no-cover .post-index{display:none}
+  .post-row.has-cover .post-copy{grid-column:1;grid-row:1}
+  .post-row.has-cover .article-cover{grid-column:2;grid-row:1;width:92px;height:72px}
+  .post-row.has-cover .arrow{grid-column:3;grid-row:1}
+  .post-row.no-cover .post-index{display:block;grid-column:1;grid-row:1}
+  .post-row.no-cover .post-copy{grid-column:2;grid-row:1}
+  .post-row.no-cover .arrow{grid-column:3;grid-row:1}
+  .hero-slide-media .cover-embed iframe{min-height:0;aspect-ratio:16/9}
+}

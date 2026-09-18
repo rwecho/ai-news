@@ -1,8 +1,9 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+import ArticleCover from '../components/ArticleCover.astro';
 
-const sitePath = (path = '') => `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}${path.replace(/^\//, '')}`;
+const sitePath = (path = '') => `${import.meta.env.BASE_URL.replace(/\\/?$/, '/')}${path.replace(/^\\//, '')}`;
 const posts = (await getCollection('news')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const featured = posts[0];
 const rest = posts.slice(1);
@@ -17,6 +18,7 @@ const rest = posts.slice(1);
 
   {featured && (
     <a class="featured-card" href={sitePath(`news/${featured.data.slug}/`)}>
+      <ArticleCover post={featured} />
       <div class="featured-meta"><span>最新文章</span><time>{featured.data.date.toLocaleDateString('zh-CN')}</time></div>
       <h2>{featured.data.title}</h2>
       <p>{featured.data.summary}</p>
@@ -29,6 +31,7 @@ const rest = posts.slice(1);
     <div class="post-list">
       {rest.map((post) => (
         <a class="post-row" href={sitePath(`news/${post.data.slug}/`)}>
+          <ArticleCover post={post} compact />
           <time>{post.data.date.toLocaleDateString('zh-CN')}</time>
           <div><h3>{post.data.title}</h3><p>{post.data.summary}</p></div>
           <span class="arrow">↗</span>

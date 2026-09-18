@@ -1,0 +1,29 @@
+---
+const { post, compact = false } = Astro.props;
+const data = post.data;
+const body = (post.body ?? '') as string;
+const driveId = data.coverDriveId
+  ?? body.match(/<DriveVideo[\\s\\S]*?fileId=["']([^"']+)["']/)?.[1];
+const imageUrl = data.cover
+  ?? body.match(/!\\[[^\\]]*\\]\\(([^)\\s]+)/)?.[1];
+const alt = data.coverAlt ?? data.title;
+---
+<div class:list={['article-cover', compact && 'article-cover-compact']}>
+  {driveId ? (
+    <div class="cover-visual cover-video">
+      <img src={`https://drive.google.com/thumbnail?id=${driveId}&sz=w1200`} alt={alt} loading="lazy" />
+      <span class="cover-play" aria-hidden="true">▶</span>
+      <span class="cover-kind">视频</span>
+    </div>
+  ) : imageUrl ? (
+    <div class="cover-visual">
+      <img src={imageUrl} alt={alt} loading="lazy" />
+      {data.coverType === 'video' && <span class="cover-play" aria-hidden="true">▶</span>}
+    </div>
+  ) : (
+    <div class="cover-fallback">
+      <span>百法难治 / AI FIELD NOTES</span>
+      <strong>{data.title}</strong>
+    </div>
+  )}
+</div>

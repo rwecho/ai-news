@@ -1,89 +1,46 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import ArticleCover from '../components/ArticleCover.astro';
 
 const sitePath = (path = '') => `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}${path.replace(/^\//, '')}`;
 const isPublic = (post) => ['ready', 'published'].includes(post.data.status ?? 'draft');
 const posts = (await getCollection('news')).filter(isPublic).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const featured = posts[0];
-const rest = posts.slice(1);
 ---
 
 <Base>
-  <section class="hero-carousel" data-carousel aria-label="最新文章">
-    <div class="hero-slides">
-      {posts.map((post, index) => (
-        <a class:list={['hero-slide', index === 0 && 'is-active']} data-slide-index={index} href={sitePath(`news/${post.data.slug}/`)}>
-          <div class="hero-slide-copy">
-            <div class="eyebrow">AI 观察 / 最新文章</div>
-            <div class="featured-meta"><span>{post.data.tags[0] ?? 'AI'}</span><time>{post.data.date.toLocaleDateString('zh-CN')}</time></div>
-            <h2>{post.data.title}</h2>
-            <p>{post.data.summary}</p>
-            <span class="read-link">阅读全文 <span>↗</span></span>
-          </div>
-          <div class="hero-slide-media"><ArticleCover post={post} /></div>
-        </a>
-      ))}
-    </div>
-    <div class="hero-controls">
-      <span class="hero-counter"><b data-current>01</b> / <span>{String(posts.length).padStart(2, '0')}</span></span>
-      <div class="hero-arrows">
-        <button type="button" data-prev aria-label="上一篇">←</button>
-        <button type="button" data-next aria-label="下一篇">→</button>
-      </div>
-    </div>
+  <section class="home-intro">
+    <div class="eyebrow">百法难治 / AI FIELD NOTES</div>
+    <h1>把 AI 的变化，<br /><em>写成值得留下的记录。</em></h1>
+    <p>不追着热搜重复消息，只把产品、模型和真实使用中的变化拆开来看。</p>
   </section>
 
-  <section class="section-block">
-    <div class="section-head"><h2>最近写的</h2><span>{posts.length} 篇记录</span></div>
+  <section class="section-block article-index">
+    <div class="section-head">
+      <h2>最新文章</h2>
+      <span>{String(posts.length).padStart(2, '0')} 篇记录</span>
+    </div>
+
     <div class="post-list">
-      {rest.map((post) => (
+      {posts.map((post, index) => (
         <a class="post-row" href={sitePath(`news/${post.data.slug}/`)}>
+          <div class="post-index">{String(index + 1).padStart(2, '0')}</div>
           <div class="post-copy">
-            <time>{post.data.date.toLocaleDateString('zh-CN')}</time>
+            <div class="post-meta">
+              <span>{post.data.tags[0] ?? 'AI'}</span>
+              <time>{post.data.date.toLocaleDateString('zh-CN')}</time>
+            </div>
             <h3>{post.data.title}</h3>
             <p>{post.data.summary}</p>
           </div>
-          <ArticleCover post={post} compact />
-          <span class="arrow">↗</span>
+          <span class="arrow" aria-hidden="true">↗</span>
         </a>
       ))}
-      {rest.length === 0 && <p class="empty">下一篇正在路上。</p>}
+      {posts.length === 0 && <p class="empty">下一篇正在路上。</p>}
     </div>
   </section>
 
   <section class="principles">
-    <span class="eyebrow">写作原则</span>
-    <p>先看证据，再下判断。能说清楚的地方说清楚，不能确认的地方就直接承认。</p>
+    <span class="eyebrow">编辑标准</span>
+    <p>先看证据，再下判断。能确认的地方说清楚，不能确认的地方直接标出来。</p>
   </section>
 </Base>
-
-<script>
-  const carousel = document.querySelector('[data-carousel]');
-  if (carousel) {
-    const slides = [...carousel.querySelectorAll('[data-slide-index]')];
-    const currentLabel = carousel.querySelector('[data-current]');
-    const previous = carousel.querySelector('[data-prev]');
-    const next = carousel.querySelector('[data-next]');
-    let current = 0;
-
-    const showSlide = (index) => {
-      current = (index + slides.length) % slides.length;
-      slides.forEach((slide, i) => slide.classList.toggle('is-active', i === current));
-      if (currentLabel) currentLabel.textContent = String(current + 1).padStart(2, '0');
-    };
-
-    previous?.addEventListener('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      showSlide(current - 1);
-    });
-
-    next?.addEventListener('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      showSlide(current + 1);
-    });
-  }
-</script>

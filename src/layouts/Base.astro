@@ -22,7 +22,7 @@ const path = Astro.url.pathname;
       </a>
       <nav>
         <a class:list-active={path === sitePath()} href={sitePath()}>首页</a>
-        <a class:list-active={path.startsWith(sitePath('tags/'))} href={sitePath('tags/')}>主题</a>
+        <a class:list-active={path.startsWith(sitePath('tags/'))} href={sitePath('tags/')}>标签</a>
         <a href="https://github.com/rwecho/ai-news">GitHub ↗</a>
       </nav>
     </header>

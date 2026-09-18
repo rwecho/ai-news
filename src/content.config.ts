@@ -12,6 +12,10 @@ const news = defineCollection({
     author: z.string().default('百法难治'),
     platforms: z.array(z.string()).default([]),
     tags: z.array(z.string()).default([]),
+    cover: z.string().url().optional(),
+    coverDriveId: z.string().optional(),
+    coverType: z.enum(['image', 'video']).default('image'),
+    coverAlt: z.string().optional(),
     evidence: z.object({
       primary_source: z.string().optional(),
       confidence: z.string().optional(),

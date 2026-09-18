@@ -4,12 +4,24 @@ const data = post.data;
 const body = (post.body ?? '') as string;
 const driveId = data.coverDriveId
   ?? body.match(/<DriveVideo[\s\S]*?fileId=["']([^"']+)["']/)?.[1];
+const videoUrl = data.coverVideoUrl;
 const imageUrl = data.cover
   ?? body.match(/!\[[^\]]*\]\(([^)\s]+)/)?.[1];
 const alt = data.coverAlt ?? data.title;
 ---
 <div class:list={['article-cover', compact && 'article-cover-compact']}>
-  {driveId ? (
+  {videoUrl ? (
+    <div class="cover-visual cover-video cover-embed">
+      <iframe
+        src={videoUrl}
+        title={alt}
+        loading="lazy"
+        allow="autoplay; fullscreen"
+        allowfullscreen
+      ></iframe>
+      <span class="cover-kind">视频</span>
+    </div>
+  ) : driveId ? (
     <div class="cover-visual cover-video">
       <img src={`https://drive.google.com/thumbnail?id=${driveId}&sz=w1200`} alt={alt} loading="lazy" />
       <span class="cover-play" aria-hidden="true">▶</span>

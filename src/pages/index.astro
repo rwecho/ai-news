@@ -10,12 +10,6 @@ const rest = posts.slice(1);
 ---
 
 <Base>
-  <section class="hero-shell">
-    <div class="eyebrow">百法难治 / AI 观察</div>
-    <h1>我不负责把 AI 说得神奇，<br /><em>只负责把它讲明白。</em></h1>
-    <p class="hero-copy">从创作者的测试、评论区的争论和真正能复现的细节出发，写一点不急着下结论的 AI 观察。</p>
-  </section>
-
   {featured && (
     <a class="featured-card" href={sitePath(`news/${featured.data.slug}/`)}>
       <div class="featured-copy">

@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import Comments from '../../components/Comments.astro';
 
 export async function getStaticPaths() {
   const posts = await getCollection('news');
@@ -23,5 +24,6 @@ const { Content } = await render(post);
       <aside class="article-aside"><span>本文记录</span><strong>事实 · 推测 · 判断</strong><small>来源链接均保留在正文附近</small></aside>
       <div class="prose"><Content /></div>
     </div>
+    <Comments />
   </article>
 </Base>

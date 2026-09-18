@@ -3,8 +3,10 @@ import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Comments from '../../components/Comments.astro';
 
+const isPublic = (post) => ['ready', 'published'].includes(post.data.status ?? 'draft');
+
 export async function getStaticPaths() {
-  const posts = await getCollection('news');
+  const posts = (await getCollection('news')).filter(isPublic);
   return posts.map((post) => ({ params: { slug: post.data.slug }, props: { post } }));
 }
 

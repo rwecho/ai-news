@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import ArticleCover from '../components/ArticleCover.astro';
 
-const sitePath = (path = '') => `${import.meta.env.BASE_URL.replace(/\\/?$/, '/')}${path.replace(/^\\//, '')}`;
+const sitePath = (path = '') => `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}${path.replace(/^\//, '')}`;
 const posts = (await getCollection('news')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const featured = posts[0];
 const rest = posts.slice(1);

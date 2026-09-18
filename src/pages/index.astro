@@ -18,11 +18,13 @@ const rest = posts.slice(1);
 
   {featured && (
     <a class="featured-card" href={sitePath(`news/${featured.data.slug}/`)}>
-      <ArticleCover post={featured} />
-      <div class="featured-meta"><span>最新文章</span><time>{featured.data.date.toLocaleDateString('zh-CN')}</time></div>
-      <h2>{featured.data.title}</h2>
-      <p>{featured.data.summary}</p>
-      <span class="read-link">阅读全文 <span>↗</span></span>
+      <div class="featured-copy">
+        <div class="featured-meta"><span>最新文章</span><time>{featured.data.date.toLocaleDateString('zh-CN')}</time></div>
+        <h2>{featured.data.title}</h2>
+        <p>{featured.data.summary}</p>
+        <span class="read-link">阅读全文 <span>↗</span></span>
+      </div>
+      <div class="featured-media"><ArticleCover post={featured} /></div>
     </a>
   )}
 
@@ -31,9 +33,12 @@ const rest = posts.slice(1);
     <div class="post-list">
       {rest.map((post) => (
         <a class="post-row" href={sitePath(`news/${post.data.slug}/`)}>
+          <div class="post-copy">
+            <time>{post.data.date.toLocaleDateString('zh-CN')}</time>
+            <h3>{post.data.title}</h3>
+            <p>{post.data.summary}</p>
+          </div>
           <ArticleCover post={post} compact />
-          <time>{post.data.date.toLocaleDateString('zh-CN')}</time>
-          <div><h3>{post.data.title}</h3><p>{post.data.summary}</p></div>
           <span class="arrow">↗</span>
         </a>
       ))}

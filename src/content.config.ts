@@ -13,6 +13,7 @@ const news = defineCollection({
     platforms: z.array(z.string()).default([]),
     tags: z.array(z.string()).default([]),
     cover: z.string().url().optional(),
+    coverVideoUrl: z.string().url().optional(),
     coverDriveId: z.string().optional(),
     coverType: z.enum(['image', 'video']).default('image'),
     coverAlt: z.string().optional(),

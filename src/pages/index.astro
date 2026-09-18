@@ -6,6 +6,7 @@ import ArticleCover from '../components/ArticleCover.astro';
 const sitePath = (path = '') => `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}${path.replace(/^\//, '')}`;
 const isPublic = (post) => ['ready', 'published'].includes(post.data.status ?? 'draft');
 const posts = (await getCollection('news')).filter(isPublic).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const rest = posts.slice(1);
 ---
 
 <Base>
@@ -41,11 +42,11 @@ const posts = (await getCollection('news')).filter(isPublic).sort((a, b) => b.da
   <section class="section-block article-index">
     <div class="section-head">
       <h2>最近写的</h2>
-      <span>{String(posts.length).padStart(2, '0')} 篇记录</span>
+      <span>{String(rest.length).padStart(2, '0')} 篇其他记录</span>
     </div>
 
     <div class="post-list">
-      {posts.map((post, index) => {
+      {rest.map((post, index) => {
         const hasCover = Boolean(post.data.cover || post.data.coverDriveId || post.data.coverVideoUrl);
         return (
           <a class:list={['post-row', hasCover ? 'has-cover' : 'no-cover']} href={sitePath(`news/${post.data.slug}/`)}>

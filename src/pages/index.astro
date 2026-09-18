@@ -10,17 +10,29 @@ const rest = posts.slice(1);
 ---
 
 <Base>
-  {featured && (
-    <a class="featured-card" href={sitePath(`news/${featured.data.slug}/`)}>
-      <div class="featured-copy">
-        <div class="featured-meta"><span>最新文章</span><time>{featured.data.date.toLocaleDateString('zh-CN')}</time></div>
-        <h2>{featured.data.title}</h2>
-        <p>{featured.data.summary}</p>
-        <span class="read-link">阅读全文 <span>↗</span></span>
+  <section class="hero-carousel" data-carousel aria-label="最新文章">
+    <div class="hero-slides">
+      {posts.map((post, index) => (
+        <a class:list={['hero-slide', index === 0 && 'is-active']} data-slide-index={index} href={sitePath(`news/${post.data.slug}/`)}>
+          <div class="hero-slide-copy">
+            <div class="eyebrow">AI 观察 / 最新文章</div>
+            <div class="featured-meta"><span>{post.data.tags[0] ?? 'AI'}</span><time>{post.data.date.toLocaleDateString('zh-CN')}</time></div>
+            <h2>{post.data.title}</h2>
+            <p>{post.data.summary}</p>
+            <span class="read-link">阅读全文 <span>↗</span></span>
+          </div>
+          <div class="hero-slide-media"><ArticleCover post={post} /></div>
+        </a>
+      ))}
+    </div>
+    <div class="hero-controls">
+      <span class="hero-counter"><b data-current>01</b> / <span>{String(posts.length).padStart(2, '0')}</span></span>
+      <div class="hero-arrows">
+        <button type="button" data-prev aria-label="上一篇">←</button>
+        <button type="button" data-next aria-label="下一篇">→</button>
       </div>
-      <div class="featured-media"><ArticleCover post={featured} /></div>
-    </a>
-  )}
+    </div>
+  </section>
 
   <section class="section-block">
     <div class="section-head"><h2>最近写的</h2><span>{posts.length} 篇记录</span></div>
@@ -45,3 +57,32 @@ const rest = posts.slice(1);
     <p>先看证据，再下判断。能说清楚的地方说清楚，不能确认的地方就直接承认。</p>
   </section>
 </Base>
+
+<script>
+  const carousel = document.querySelector('[data-carousel]');
+  if (carousel) {
+    const slides = [...carousel.querySelectorAll('[data-slide-index]')];
+    const currentLabel = carousel.querySelector('[data-current]');
+    const previous = carousel.querySelector('[data-prev]');
+    const next = carousel.querySelector('[data-next]');
+    let current = 0;
+
+    const showSlide = (index) => {
+      current = (index + slides.length) % slides.length;
+      slides.forEach((slide, i) => slide.classList.toggle('is-active', i === current));
+      if (currentLabel) currentLabel.textContent = String(current + 1).padStart(2, '0');
+    };
+
+    previous?.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      showSlide(current - 1);
+    });
+
+    next?.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      showSlide(current + 1);
+    });
+  }
+</script>

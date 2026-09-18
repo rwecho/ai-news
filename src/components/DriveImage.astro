@@ -1,0 +1,18 @@
+---
+interface Props {
+  fileId: string;
+  title?: string;
+  caption?: string;
+  sourceUrl?: string;
+}
+const { fileId, title = '文章截图', caption = '研究截图', sourceUrl } = Astro.props;
+const src = `https://drive.google.com/thumbnail?id=${fileId}&sz=w1600`;
+---
+
+<figure class="article-figure">
+  <img src={src} alt={title} loading="lazy" />
+  <figcaption>
+    <span>{caption}</span>
+    {sourceUrl && <a href={sourceUrl} target="_blank" rel="noreferrer">查看原视频 ↗</a>}
+  </figcaption>
+</figure>

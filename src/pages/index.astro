@@ -13,7 +13,7 @@ const rest = posts.slice(1);
   <section class="hero-carousel" data-carousel aria-label="最新文章">
     <div class="hero-slides">
       {posts.map((post, index) => (
-        <a class:list={['hero-slide', index === 0 && 'is-active']} data-slide-index={index} href={sitePath(`news/${post.data.slug}/`)}>
+        <a class:list={['hero-slide', index === 0 && 'is-active']} data-slide-index={index} data-post-slug={post.data.slug} href={sitePath(`news/${post.data.slug}/`)}>
           <div class="hero-slide-copy">
             <div class="eyebrow">百法难治 / AI FIELD NOTES</div>
             <div class="featured-meta">
@@ -42,14 +42,14 @@ const rest = posts.slice(1);
   <section class="section-block article-index">
     <div class="section-head">
       <h2>最近写的</h2>
-      <span>{String(rest.length).padStart(2, '0')} 篇其他记录</span>
+      <span>{String(Math.max(posts.length - 1, 0)).padStart(2, '0')} 篇其他记录</span>
     </div>
 
     <div class="post-list">
-      {rest.map((post, index) => {
+      {posts.map((post, index) => {
         const hasCover = Boolean(post.data.cover || post.data.coverDriveId || post.data.coverVideoUrl);
         return (
-          <a class:list={['post-row', hasCover ? 'has-cover' : 'no-cover']} href={sitePath(`news/${post.data.slug}/`)}>
+          <a class:list={['post-row', hasCover ? 'has-cover' : 'no-cover']} data-post-row={post.data.slug} href={sitePath(`news/${post.data.slug}/`)}>
             <div class="post-index">{String(index + 1).padStart(2, '0')}</div>
             <div class="post-copy">
               <div class="post-meta">
@@ -64,7 +64,7 @@ const rest = posts.slice(1);
           </a>
         );
       })}
-      {rest.length === 0 && <p class="empty">更多文章正在路上。</p>}
+      {posts.length <= 1 && <p class="empty">更多文章正在路上。</p>}
     </div>
   </section>
 </Base>
@@ -81,9 +81,17 @@ const rest = posts.slice(1);
     const showSlide = (index) => {
       if (!slides.length) return;
       current = (index + slides.length) % slides.length;
-      slides.forEach((slide, i) => slide.classList.toggle('is-active', i === current));
+      slides.forEach((slide, i) => {
+        slide.classList.toggle('is-active', i === current);
+      });
+      const activeSlug = slides[current]?.dataset.postSlug;
+      document.querySelectorAll('[data-post-row]').forEach((row) => {
+        row.classList.toggle('is-featured-current', row.dataset.postRow === activeSlug);
+      });
       if (currentLabel) currentLabel.textContent = String(current + 1).padStart(2, '0');
     };
+
+    showSlide(0);
 
     previous?.addEventListener('click', (event) => {
       event.preventDefault();
